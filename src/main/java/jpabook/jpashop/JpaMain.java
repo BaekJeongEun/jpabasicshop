@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaMain {
@@ -104,10 +105,14 @@ public class JpaMain {
             // 임베디드 타입
             Member member3 = new Member();
             member3.setName("hello Embedded Type");
-            member3.setHomeAddress(new Address("city", "street", "1000"));
+            Address address = new Address("city", "street", "1000");
+            member3.setHomeAddress(address);
             member3.setWorkPeroid(new Peroid());
-
             em.persist(member3);
+
+            // 값 타입과 불변 객체
+            Address newAddress = new Address("New City", address.getStreet(), address.getZipcode());
+            member3.setHomeAddress(newAddress); // Address의 속성을 바꾸려면 객체 자체를 통째로 갈아끼워야 함.
 
             tx.commit(); // DB에 반영하자. 이거 안 쓰면 Connection leak detected 에러남.
         } catch (Exception e){
