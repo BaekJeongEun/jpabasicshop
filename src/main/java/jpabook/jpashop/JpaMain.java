@@ -1,10 +1,7 @@
 package jpabook.jpashop;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
-import jpabook.jpashop.domain.Book;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
@@ -84,6 +81,33 @@ public class JpaMain {
             refMember.getName(); // 강제 초기화
 
             Hibernate.initialize(refMember); // 강제 초기화
+
+            // 영속성 전이(CASCADE)와 고아 객체
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+            // Parent의 childList에서 @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL) 속성으로 지정하여 자동 저장
+            // em.persist(child1);
+            // em.persist(child2);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
+            
+            // 임베디드 타입
+            Member member3 = new Member();
+            member3.setName("hello Embedded Type");
+            member3.setHomeAddress(new Address("city", "street", "1000"));
+            member3.setWorkPeroid(new Peroid());
+
+            em.persist(member3);
 
             tx.commit(); // DB에 반영하자. 이거 안 쓰면 Connection leak detected 에러남.
         } catch (Exception e){
