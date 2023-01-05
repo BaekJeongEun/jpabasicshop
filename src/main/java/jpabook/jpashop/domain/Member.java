@@ -21,6 +21,18 @@ public class Member extends BaseEntity {
     @Embedded
     private Address homeAddress;
 
+    // 주소
+    @Embedded
+    @AttributeOverrides({ // 한 엔티티에서 같은 값 타입을 사용하기 위함
+            @AttributeOverride(name="city",
+                    column = @Column(name="WORK_CITY")), // DB 칼럼명 중복 방지를 위한 지정
+            @AttributeOverride(name="street",
+                    column = @Column(name="WORK_STREET")),
+            @AttributeOverride(name="zipcode",
+                    column = @Column(name="WORK_ZIPCODE"))
+    })
+    private Address workAddress;
+
     public Peroid getWorkPeroid() {
         return workPeroid;
     }
