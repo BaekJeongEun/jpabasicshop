@@ -5,6 +5,7 @@ import jpabook.jpashop.domain.Book;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,7 +41,6 @@ public class JpaMain {
 
             em.persist(book);
 */
-
             // 프록시
             Member member = new Member();
             member.setName("김영한");
@@ -62,14 +62,13 @@ public class JpaMain {
 
             logic(m1, m2);
 
-            /*
             /**
              * (1) em.find() : 데이터베이스를 통해 실제 엔티티 객체 조회
-             * /
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember.id = "+findMember.getId());
-            System.out.println("findMember.name = "+findMember.getName());
-*/
+             */
+            //Member findMember = em.find(Member.class, member.getId());
+            //System.out.println("findMember.id = "+findMember.getId());
+            //System.out.println("findMember.name = "+findMember.getName());
+
             /**
              * (2) em.getReference() : 데이터베이스 조회를 미루는 가짜(프록시)
              */
@@ -77,6 +76,14 @@ public class JpaMain {
             System.out.println("findMember.id = "+findMember.getId()); // getReference()를 Id값으로 찾았기 때문에 DB에서 정보를 가져오지 않음
             // DB에 쿼리 날아가는 시점
             System.out.println("findMember.name = "+findMember.getName());
+
+            // 프록시 확인
+            // 프록시 인스턴스의 초기화 여부 확인
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass());; // Proxy
+            refMember.getName(); // 강제 초기화
+
+            Hibernate.initialize(refMember); // 강제 초기화
 
             tx.commit(); // DB에 반영하자. 이거 안 쓰면 Connection leak detected 에러남.
         } catch (Exception e){
