@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16914225-9d34-438e-88f5-58bb932f67f1" name="변경" comment="add: 임베디드 타입 AttributeOverrides 활용">
+    <list default="true" id="16914225-9d34-438e-88f5-58bb932f67f1" name="변경" comment="add: 값 타입과 불변 객체">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/JpaMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/JpaMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Member.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +111,7 @@
       <workItem from="1672747271999" duration="20000" />
       <workItem from="1672747738133" duration="24000" />
       <workItem from="1672747858953" duration="657000" />
-      <workItem from="1672751338709" duration="16697000" />
+      <workItem from="1672751338709" duration="22212000" />
     </task>
     <task id="LOCAL-00001" summary="docs: jpashop">
       <created>1658936547588</created>
@@ -160,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672904306436</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add: 값 타입과 불변 객체">
+      <created>1672905309494</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1672905309494</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +194,7 @@
     <MESSAGE value="add: 프록시 강제 초기화" />
     <MESSAGE value="add: 임베디드 타입" />
     <MESSAGE value="add: 임베디드 타입 AttributeOverrides 활용" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: 임베디드 타입 AttributeOverrides 활용" />
+    <MESSAGE value="add: 값 타입과 불변 객체" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: 값 타입과 불변 객체" />
   </component>
 </project>

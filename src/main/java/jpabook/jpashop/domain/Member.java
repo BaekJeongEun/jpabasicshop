@@ -2,7 +2,9 @@ package jpabook.jpashop.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Member extends BaseEntity {
@@ -21,7 +23,21 @@ public class Member extends BaseEntity {
     @Embedded
     private Address homeAddress;
 
-    // 주소
+    @ElementCollection // 값 타입을 하나 이상 저장할 때 사용
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns =
+        @JoinColumn(name = "MEMBER_ID") // 외래키로 잡음
+    ) // 컬렉션 저장하기 위한 별도의 테이블이 필요함
+
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods  = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns =
+        @JoinColumn(name = "MEMBER_ID") // 외래키로 잡음
+    )
+    private List<Address> addressHistory = new ArrayList<>();
+
+/*    // 주소
     @Embedded
     @AttributeOverrides({ // 한 엔티티에서 같은 값 타입을 사용하기 위함
             @AttributeOverride(name="city",
@@ -32,6 +48,23 @@ public class Member extends BaseEntity {
                     column = @Column(name="WORK_ZIPCODE"))
     })
     private Address workAddress;
+*/
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
 
     public Peroid getWorkPeroid() {
         return workPeroid;

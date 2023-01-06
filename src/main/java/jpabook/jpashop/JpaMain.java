@@ -75,15 +75,19 @@ public class JpaMain {
             // DB에 쿼리 날아가는 시점
             System.out.println("findMember.name = "+findMember.getName());
 
-            // 프록시 확인
-            // 프록시 인스턴스의 초기화 여부 확인
+            /**
+             * 프록시 확인
+             * 프록시 인스턴스의 초기화 여부 확인
+             */
             Member refMember = em.getReference(Member.class, member1.getId());
             System.out.println("refMember = " + refMember.getClass());; // Proxy
             refMember.getName(); // 강제 초기화
 
             Hibernate.initialize(refMember); // 강제 초기화
 
-            // 영속성 전이(CASCADE)와 고아 객체
+            /**
+             * 영속성 전이(CASCADE)와 고아 객체
+             */
             Child child1 = new Child();
             Child child2 = new Child();
 
@@ -102,7 +106,9 @@ public class JpaMain {
             Parent findParent = em.find(Parent.class, parent.getId());
             findParent.getChildList().remove(0);
             
-            // 임베디드 타입
+            /**
+             * 임베디드 타입
+             */
             Member member3 = new Member();
             member3.setName("hello Embedded Type");
             Address address = new Address("city", "street", "1000");
@@ -110,9 +116,43 @@ public class JpaMain {
             member3.setWorkPeroid(new Peroid());
             em.persist(member3);
 
-            // 값 타입과 불변 객체
+            /**
+             * 값 타입과 불변 객체
+             */
             Address newAddress = new Address("New City", address.getStreet(), address.getZipcode());
             member3.setHomeAddress(newAddress); // Address의 속성을 바꾸려면 객체 자체를 통째로 갈아끼워야 함.
+
+            /**
+             * 값 타입 컬렉션 사용
+             */
+            Member member4 = new Member();
+            member4.setName("member4");
+            member4.setHomeAddress(new Address("homeCity", "street", "1000"));
+        
+            member4.getFavoriteFoods().add("치킨");    
+            member4.getFavoriteFoods().add("족발");    
+            member4.getFavoriteFoods().add("피자");
+
+            member4.getAddressHistory().add(new Address("old1", "street", "1000"));
+            member4.getAddressHistory().add(new Address("old2", "street", "1000"));
+
+            em.persist(member4);
+
+            em.flush();
+            em.clear();
+
+            System.out.println("========== START ==========");
+            Member findMember1 = em.find(Member.class, member4.getId());
+            // homeCity -> newCity
+            // findMember1.getFavoriteFoods().remove("치킨"); (X)
+            Address a = findMember1.getHomeAddress();
+            findMember1.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+            // 치킨 -> 한식
+            findMember1.getFavoriteFoods().remove("치킨");
+            findMember1.getFavoriteFoods().add("한식");
+            findMember1.getAddressHistory().remove(new Address("old1", "street", "1000"));
+            findMember1.getAddressHistory().add(new Address("newCity1", "street", "1000"));
 
             tx.commit(); // DB에 반영하자. 이거 안 쓰면 Connection leak detected 에러남.
         } catch (Exception e){
